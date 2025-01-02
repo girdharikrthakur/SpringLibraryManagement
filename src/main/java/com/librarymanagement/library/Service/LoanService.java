@@ -31,14 +31,14 @@ public class LoanService {
  }
 
  public ResponseEntity<ResponseStructure<List<Loan>>> getLoans() {
+  List<Loan> loans = loanDAO.getLoans(); // Fetch the loans from the DAO layer
 
-  List<Loan> loans = loanDAO.getLoans();
-  ResponseStructure<Loan> structure = new ResponseStructure<>();
+  ResponseStructure<List<Loan>> structure = new ResponseStructure<>();
   structure.setStatuscode(HttpStatus.ACCEPTED.value());
   structure.setMessage("Loans retrieved successfully");
-  structure.setData(loans);
-  return new ResponseEntity<ResponseStructure<List<Loan>>>(HttpStatus.ACCEPTED);
+  structure.setData(loans); // Set the list of loans as data
 
+  return new ResponseEntity<>(structure, HttpStatus.ACCEPTED);
  }
 
  public ResponseEntity<ResponseStructure<Loan>> getLoanById(int id) {
@@ -48,10 +48,10 @@ public class LoanService {
   if (requestedLoan.isPresent()) {
    structure.setStatuscode(HttpStatus.OK.value());
    structure.setMessage("Loan retrieved successfully");
-   structure.getData(requestedLoan);
+   structure.setData(requestedLoan.get());
    return new ResponseEntity<ResponseStructure<Loan>>(structure, HttpStatus.OK);
   } else {
-   structure.setStatuscode(HttpStatus.NOT_FOUND);
+   structure.setStatuscode(HttpStatus.NOT_FOUND.value());
    structure.setMessage("Id Not Found");
    return new ResponseEntity<ResponseStructure<Loan>>(structure, HttpStatus.NOT_FOUND);
   }
@@ -63,7 +63,7 @@ public class LoanService {
   if (existingLoan.isPresent()) {
 
    Loan updatedLoan = loanDAO.updateLoan(loan);
-   structure.setStatuscode(HttpStatus.ACCEPTED);
+   structure.setStatuscode(HttpStatus.ACCEPTED.value());
    structure.setMessage("Loan Updated");
    structure.setData(updatedLoan);
    return new ResponseEntity<ResponseStructure<Loan>>(structure, HttpStatus.ACCEPTED);
@@ -92,7 +92,7 @@ public class LoanService {
    return new ResponseEntity<ResponseStructure<Loan>>(structure, HttpStatus.ACCEPTED);
 
   } else {
-   structure.setStatuscode(HttpStatus.NOT_FOUND);
+   structure.setStatuscode(HttpStatus.NOT_FOUND.value());
    structure.setMessage("Loan ID Not Found");
    return new ResponseEntity<ResponseStructure<Loan>>(structure, HttpStatus.NOT_FOUND);
   }

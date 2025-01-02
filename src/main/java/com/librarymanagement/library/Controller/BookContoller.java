@@ -35,9 +35,15 @@ public class BookContoller {
   return bookService.geAllBooks();
  }
 
- @GetMapping("/{id}")
+ @GetMapping("/{id:\\d+}")
  public ResponseEntity<ResponseStructure<Book>> getBookById(@PathVariable int id) {
   return bookService.getBookById(id);
+ }
+
+ @GetMapping("/{genre:[a-zA-Z][a-z]*}")
+ public ResponseEntity<ResponseStructure<List<Book>>> getBookByGenre(@PathVariable String genre) {
+  String normalizedGenre = genre.substring(0, 1).toUpperCase() + genre.substring(1);
+  return bookService.getBookByGenre(normalizedGenre);
  }
 
  @PutMapping

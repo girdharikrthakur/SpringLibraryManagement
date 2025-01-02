@@ -36,4 +36,8 @@ public class BookDAO {
   return null;
  }
 
+ public List<Book> getBookByGenre(String genre) {
+  return bookRepository.findByGenre(genre);
+ }
+
 }

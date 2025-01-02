@@ -76,25 +76,38 @@ public class BookService {
  // PutMappingy to updatebook by id
 
  public ResponseEntity<ResponseStructure<Book>> updateBook(Book book) {
-
-  Optional<Book> existigBook = bookDAO.getBookById(book.getId());
   ResponseStructure<Book> structure = new ResponseStructure<>();
 
-  if (existigBook.isPresent()) {
-   Book updatedBook = bookDAO.updateBook(book);
-   structure.setStatuscode(HttpStatus.ACCEPTED.value());
+  // Check if the book already exists
+  Optional<Book> existingBookOptional = bookDAO.getBookById(book.getId());
+
+  if (existingBookOptional.isPresent()) {
+   // If the book exists, update its fields
+   Book existingBook = existingBookOptional.get();
+
+   // Update only the fields that are provided
+   if (book.getTitle() != null && !book.getTitle().isEmpty()) {
+    existingBook.setTitle(book.getTitle());
+   }
+   if (book.getGenre() != null && !book.getGenre().isEmpty()) {
+    existingBook.setGenre(book.getGenre());
+   }
+   // Add more fields as necessary
+
+   // Save the updated book
+   Book updatedBook = bookDAO.updateBook(existingBook); // Assuming updateBook saves the changes
+   structure.setStatuscode(HttpStatus.OK.value());
    structure.setMessage("Book Updated");
    structure.setData(updatedBook);
-   return new ResponseEntity<>(structure, HttpStatus.ACCEPTED);
-
+   return new ResponseEntity<>(structure, HttpStatus.OK);
   } else {
-   Book savedBook = bookDAO.updateBook(book);
+   // If the book does not exist, create a new book
+   Book savedBook = bookDAO.saveBook(book); // Assuming saveBook persists the book
    structure.setStatuscode(HttpStatus.CREATED.value());
    structure.setMessage("Book Created");
    structure.setData(savedBook);
    return new ResponseEntity<>(structure, HttpStatus.CREATED);
   }
-
  }
 
  // DeleteMappling to delete book by id
@@ -116,6 +129,23 @@ public class BookService {
    structure.setStatuscode(HttpStatus.NOT_FOUND.value());
    structure.setMessage("Book Not Found");
    return new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
+  }
+
+ }
+
+ public ResponseEntity<ResponseStructure<List<Book>>> getBookByGenre(String genre) {
+  List<Book> requestedBook = bookDAO.getBookByGenre(genre);
+  ResponseStructure<List<Book>> structure = new ResponseStructure<>();
+  if (requestedBook != null) {
+   structure.setStatuscode(HttpStatus.OK.value());
+   structure.setMessage("Book Found");
+   structure.setData(requestedBook);
+   return new ResponseEntity<ResponseStructure<List<Book>>>(structure, HttpStatus.OK);
+
+  } else {
+   structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+   structure.setMessage("Book Not Found");
+   return new ResponseEntity<ResponseStructure<List<Book>>>(structure, HttpStatus.NOT_FOUND);
   }
 
  }
