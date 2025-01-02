@@ -88,7 +88,7 @@ public class AuthorService {
    structure.setData(deletedAuthor);
    return new ResponseEntity<ResponseStructure<Author>>(structure, HttpStatus.OK);
   }
-  
+
   else {
    structure.setStatuscode(HttpStatus.NOT_FOUND.value());
    structure.setMessage("Author not found");

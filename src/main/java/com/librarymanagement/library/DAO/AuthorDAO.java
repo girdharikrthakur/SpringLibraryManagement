@@ -35,7 +35,7 @@ public class AuthorDAO {
  public Author deleteAuthor(int id) {
   authorRepository.deleteById(id);
 
-  return Author;
+  return null;
 
  }
 
