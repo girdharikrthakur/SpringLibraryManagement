@@ -10,4 +10,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
  public List<Book> findByGenre(String genre);
 
+ public List<Book> findByAuthorId(int authorId);
+
 }

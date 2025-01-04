@@ -2,6 +2,9 @@ package com.librarymanagement.library.Entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Book {
 
  @Id
@@ -24,7 +28,8 @@ public class Book {
  @JoinColumn(name = "author_id")
  private Author author;
 
- @OneToMany(mappedBy = "book", cascade = CascadeType.ALL) // FIXED: mappedBy references the "book" field in Loan.
+ @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+ @JsonBackReference
  private List<Loan> loans;
 
  public int getId() {

@@ -8,9 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.librarymanagement.library.DAO.BookDAO;
 import com.librarymanagement.library.DAO.LoanDAO;
+import com.librarymanagement.library.DAO.MemberDAO;
 import com.librarymanagement.library.DTO.ResponseStructure;
+import com.librarymanagement.library.Entity.Book;
 import com.librarymanagement.library.Entity.Loan;
+import com.librarymanagement.library.Entity.Member;
 
 @Service
 public class LoanService {
@@ -18,17 +22,58 @@ public class LoanService {
  @Autowired
  private LoanDAO loanDAO;
 
+ @Autowired
+ private BookDAO bookDAO;
+
+ @Autowired
+ private MemberDAO memberDAO;
+
+ /////
+
  public ResponseEntity<ResponseStructure<Loan>> saveLoan(Loan loan) {
+
+  ResponseStructure<Loan> structure = new ResponseStructure<>();
+
+  // Validating associated Book
+  Optional<Book> bookOptional = bookDAO.getBookById(loan.getBook().getId());
+  if (bookOptional.isEmpty()) {
+   structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+   structure.setMessage("Book Not Found");
+   structure.setData(null);
+   return new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
+  }
+
+  // Fetch the book if exists
+  Book book = bookOptional.get();
+  // You can now use the 'book' object and its properties, including book.getId().
+
+  // Validating associated Member
+  Optional<Member> memberOptional = memberDAO.getMemberById(loan.getMember().getId());
+  if (memberOptional.isEmpty()) {
+   structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+   structure.setMessage("Member Not Found");
+   structure.setData(null);
+   return new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
+  }
+
+  // Fetch the member if exists
+  Member member = memberOptional.get();
+  // You can now use the 'member' object and its properties, including
+  // member.getId().
+
+  // Set the book and member to the loan
+  loan.setBook(book);
+  loan.setMember(member);
 
   Loan savedLoan = loanDAO.saveLoan(loan);
 
-  ResponseStructure<Loan> structure = new ResponseStructure<>();
   structure.setStatuscode(HttpStatus.CREATED.value());
   structure.setMessage("Loan saved successfully");
   structure.setData(savedLoan);
-  return new ResponseEntity<ResponseStructure<Loan>>(structure, HttpStatus.CREATED);
-
+  return new ResponseEntity<>(structure, HttpStatus.CREATED);
  }
+
+ ////
 
  public ResponseEntity<ResponseStructure<List<Loan>>> getLoans() {
   List<Loan> loans = loanDAO.getLoans(); // Fetch the loans from the DAO layer
@@ -41,11 +86,14 @@ public class LoanService {
   return new ResponseEntity<>(structure, HttpStatus.ACCEPTED);
  }
 
+ ////
+
  public ResponseEntity<ResponseStructure<Loan>> getLoanById(int id) {
 
   Optional<Loan> requestedLoan = loanDAO.getLoanById(id);
   ResponseStructure<Loan> structure = new ResponseStructure<>();
   if (requestedLoan.isPresent()) {
+
    structure.setStatuscode(HttpStatus.OK.value());
    structure.setMessage("Loan retrieved successfully");
    structure.setData(requestedLoan.get());
@@ -56,6 +104,8 @@ public class LoanService {
    return new ResponseEntity<ResponseStructure<Loan>>(structure, HttpStatus.NOT_FOUND);
   }
  }
+
+ ////
 
  public ResponseEntity<ResponseStructure<Loan>> updateLoan(Loan loan) {
   Optional<Loan> existingLoan = loanDAO.getLoanById(loan.getId());
@@ -79,6 +129,8 @@ public class LoanService {
   }
 
  }
+
+ ////
 
  public ResponseEntity<ResponseStructure<Loan>> deleteLoanById(int id) {
 

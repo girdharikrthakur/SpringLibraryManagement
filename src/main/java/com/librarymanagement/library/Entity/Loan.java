@@ -2,6 +2,9 @@ package com.librarymanagement.library.Entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Loan {
 
  @Id
@@ -18,8 +22,9 @@ public class Loan {
  private LocalDate loanDate;
  private LocalDate returnDate;
 
- @ManyToOne // FIXED: Added this to link Loan to Book.
- @JoinColumn(name = "book_id") // Maps the foreign key in Loan table.
+ @ManyToOne
+ @JoinColumn(name = "book_id")
+ @JsonManagedReference
  private Book book;
 
  @ManyToOne
