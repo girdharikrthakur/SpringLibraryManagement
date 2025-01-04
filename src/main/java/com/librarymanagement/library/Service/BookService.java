@@ -38,18 +38,17 @@ public class BookService {
 
   ResponseStructure<List<Book>> structure = new ResponseStructure<>();
 
-  if (books.isEmpty()) {
+  if (books == null || books.isEmpty()) { // Check if books list is null or empty
    structure.setStatuscode(HttpStatus.NOT_FOUND.value());
-   structure.setMessage("No book Found");
-   return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+   structure.setMessage("No books found");
+   structure.setData(null); // Explicitly set data to null
+   return new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
   } else {
-
-   structure.setStatuscode(HttpStatus.FOUND.value());
-   structure.setMessage("Found Books");
+   structure.setStatuscode(HttpStatus.OK.value());
+   structure.setMessage("Books found");
    structure.setData(books);
-   return new ResponseEntity<ResponseStructure<List<Book>>>(structure, HttpStatus.FOUND);
+   return new ResponseEntity<>(structure, HttpStatus.OK);
   }
-
  }
 
  // GetMapping to gt book by id

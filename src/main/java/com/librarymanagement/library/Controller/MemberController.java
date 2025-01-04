@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.librarymanagement.library.DTO.ResponseStructure;
 import com.librarymanagement.library.Entity.Member;
 import com.librarymanagement.library.Service.MemberService;
 
+@RestController
+@RequestMapping("/member")
 public class MemberController {
  @Autowired
  private MemberService memberService;
@@ -44,7 +48,5 @@ public class MemberController {
  public ResponseEntity<ResponseStructure<Member>> deleteMember(@RequestBody Member member) {
   return memberService.deleteMember(member);
  }
-
- 
 
 }

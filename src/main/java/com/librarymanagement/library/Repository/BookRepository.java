@@ -8,6 +8,6 @@ import com.librarymanagement.library.Entity.Book;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
- List<Book> findByGenre(String genre);
+ public List<Book> findByGenre(String genre);
 
 }

@@ -46,7 +46,7 @@ public class AuthorService {
 
  public ResponseEntity<ResponseStructure<Author>> getAuthorById(int id) {
   Optional<Author> author = authorDAO.getAuthorById(id);
-  if (author == null) {
+  if (author.isEmpty()) {
    ResponseStructure<Author> structure = new ResponseStructure<>();
    structure.setStatuscode(HttpStatus.NOT_FOUND.value());
    structure.setMessage("Author not found");

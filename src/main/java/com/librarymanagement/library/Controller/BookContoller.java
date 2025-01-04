@@ -30,7 +30,7 @@ public class BookContoller {
  }
 
  @GetMapping
- public ResponseEntity<ResponseStructure<List<Book>>> getAllBooks(@RequestBody Book book) {
+ public ResponseEntity<ResponseStructure<List<Book>>> getAllBooks() {
 
   return bookService.geAllBooks();
  }
