@@ -29,8 +29,8 @@ public class MemberController {
  }
 
  @GetMapping
- public ResponseEntity<ResponseStructure<List<Member>>> getAllMembers(@RequestBody Member member) {
-  return memberService.getAllMembers(member);
+ public ResponseEntity<ResponseStructure<List<Member>>> getAllMembers() {
+  return memberService.getAllMembers();
  }
 
  @GetMapping("/{id}")

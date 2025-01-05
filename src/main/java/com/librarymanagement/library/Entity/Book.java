@@ -3,7 +3,6 @@ package com.librarymanagement.library.Entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -14,8 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+// @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Book {
 
  @Id

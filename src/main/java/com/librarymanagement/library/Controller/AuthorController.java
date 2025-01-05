@@ -31,7 +31,7 @@ public class AuthorController {
  }
 
  @GetMapping
- public ResponseEntity<ResponseStructure<List<Author>>> getAllAuthor(@RequestBody Author author) {
+ public ResponseEntity<ResponseStructure<List<Author>>> getAllAuthor() {
   return authorService.getAllAuthor();
  }
 
@@ -41,8 +41,8 @@ public class AuthorController {
  }
 
  @PutMapping
- public ResponseEntity<ResponseStructure<Author>> updateAuthor(@RequestBody Author author) {
-  return authorService.updateAuthor(author);
+ public ResponseEntity<ResponseStructure<Author>> updateAuthor(@PathVariable int id, @RequestBody Author author) {
+  return authorService.updateAuthor(id, author);
 
  }
 

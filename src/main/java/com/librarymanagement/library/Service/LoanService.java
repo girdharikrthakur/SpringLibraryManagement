@@ -28,7 +28,7 @@ public class LoanService {
  @Autowired
  private MemberDAO memberDAO;
 
- /////
+ ///// PutMapping
 
  public ResponseEntity<ResponseStructure<Loan>> saveLoan(Loan loan) {
 
@@ -42,11 +42,8 @@ public class LoanService {
    structure.setData(null);
    return new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
   }
-
   // Fetch the book if exists
   Book book = bookOptional.get();
-  // You can now use the 'book' object and its properties, including book.getId().
-
   // Validating associated Member
   Optional<Member> memberOptional = memberDAO.getMemberById(loan.getMember().getId());
   if (memberOptional.isEmpty()) {
@@ -55,11 +52,8 @@ public class LoanService {
    structure.setData(null);
    return new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
   }
-
   // Fetch the member if exists
   Member member = memberOptional.get();
-  // You can now use the 'member' object and its properties, including
-  // member.getId().
 
   // Set the book and member to the loan
   loan.setBook(book);
@@ -77,13 +71,21 @@ public class LoanService {
 
  public ResponseEntity<ResponseStructure<List<Loan>>> getLoans() {
   List<Loan> loans = loanDAO.getLoans(); // Fetch the loans from the DAO layer
-
   ResponseStructure<List<Loan>> structure = new ResponseStructure<>();
-  structure.setStatuscode(HttpStatus.ACCEPTED.value());
-  structure.setMessage("Loans retrieved successfully");
-  structure.setData(loans); // Set the list of loans as data
 
-  return new ResponseEntity<>(structure, HttpStatus.ACCEPTED);
+  if (loans == null || loans.isEmpty()) {
+   structure.setStatuscode(HttpStatus.NO_CONTENT.value());
+   structure.setMessage("No Loans Found");
+   structure.setData(null);
+   return new ResponseEntity<>(structure, HttpStatus.NO_CONTENT);
+   
+  }
+  else {
+   structure.setStatuscode(HttpStatus.ACCEPTED.value());
+   structure.setMessage("Loans retrieved successfully");
+   structure.setData(loans); // Set the list of loans as data
+   return new ResponseEntity<>(structure, HttpStatus.ACCEPTED);
+  }
  }
 
  ////

@@ -20,7 +20,7 @@ public class AuthorDAO {
 
  }
 
- public List<Author> getAllAuthor(Author author) {
+ public List<Author> getAllAuthor() {
   return authorRepository.findAll();
  }
 

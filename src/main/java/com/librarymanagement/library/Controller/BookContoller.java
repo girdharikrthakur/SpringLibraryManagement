@@ -3,6 +3,7 @@ package com.librarymanagement.library.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class BookContoller {
  @Autowired
  private BookService bookService;
 
- @PostMapping
+ @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, "application/json;charset=UTF-8" })
  public ResponseEntity<ResponseStructure<Book>> saveBook(@RequestBody Book book) {
   return bookService.saveBook(book);
  }

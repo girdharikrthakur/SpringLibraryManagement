@@ -31,13 +31,22 @@ public class MemberService {
 
  // GetMapping To Get All the Books
 
- public ResponseEntity<ResponseStructure<List<Member>>> getAllMembers(Member member) {
-  List<Member> Members = memberDAO.getAllMembers();
+ public ResponseEntity<ResponseStructure<List<Member>>> getAllMembers() {
+  List<Member> members = memberDAO.getAllMembers();
+
   ResponseStructure<List<Member>> structure = new ResponseStructure<>();
-  structure.setStatuscode(HttpStatus.OK.value());
-  structure.setMessage("Books retrieved successfully");
-  structure.setData(Members);
-  return new ResponseEntity<ResponseStructure<List<Member>>>(structure, HttpStatus.ACCEPTED);
+
+  if (members == null || members.isEmpty()) {
+   structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+   structure.setMessage("No members found");
+   return new ResponseEntity<ResponseStructure<List<Member>>>(structure, HttpStatus.NOT_FOUND);
+
+  } else {
+   structure.setStatuscode(HttpStatus.OK.value());
+   structure.setMessage("Books retrieved successfully");
+   structure.setData(members);
+   return new ResponseEntity<ResponseStructure<List<Member>>>(structure, HttpStatus.ACCEPTED);
+  }
  }
 
  public ResponseEntity<ResponseStructure<Member>> getMemberById(int id) {

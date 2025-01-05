@@ -2,7 +2,6 @@ package com.librarymanagement.library.Entity;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
@@ -12,8 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+// @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Loan {
 
  @Id

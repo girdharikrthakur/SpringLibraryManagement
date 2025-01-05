@@ -33,13 +33,21 @@ public class AuthorService {
 
  public ResponseEntity<ResponseStructure<List<Author>>> getAllAuthor() {
 
-  List<Author> authors = authorDAO.getAllAuthor(null);
-
+  List<Author> authors = authorDAO.getAllAuthor();
   ResponseStructure<List<Author>> structure = new ResponseStructure<>();
-  structure.setStatuscode(HttpStatus.OK.value());
-  structure.setMessage("Authors retrieved successfully");
-  structure.setData(authors);
-  return new ResponseEntity<ResponseStructure<List<Author>>>(structure, HttpStatus.OK);
+
+  if (authors==null|| authors.isEmpty()) {
+   structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+   structure.setMessage("No Author Exist");
+   return new ResponseEntity<ResponseStructure<List<Author>>>(structure, HttpStatus.NOT_FOUND);
+
+  }
+  else {
+   structure.setStatuscode(HttpStatus.OK.value());
+   structure.setMessage("Authors retrieved successfully");
+   structure.setData(authors);
+   return new ResponseEntity<ResponseStructure<List<Author>>>(structure, HttpStatus.OK);
+  }
  }
 
  // GetMapping to request Author by Id
@@ -62,11 +70,19 @@ public class AuthorService {
 
  // PutMapping to update Author
 
- public ResponseEntity<ResponseStructure<Author>> updateAuthor(Author updateAuthorDetails) {
+ public ResponseEntity<ResponseStructure<Author>> updateAuthor(int id, Author updateAuthorDetails) {
   ResponseStructure<Author> structure = new ResponseStructure<>();
 
-  Author updatedAuthor = authorDAO.updateAuthor(updateAuthorDetails);
+  if (authorDAO.getAuthorById(id).isPresent()) {
+   Author author = authorDAO.getAuthorById(id).get();
+   structure.setStatuscode(HttpStatus.OK.value());
+   structure.setMessage("Author Already Exist");
+   structure.setData(author);
+   return new ResponseEntity<ResponseStructure<Author>>(structure, HttpStatus.OK);
 
+  }
+
+  Author updatedAuthor = authorDAO.updateAuthor(updateAuthorDetails);
   structure.setStatuscode(HttpStatus.OK.value());
   structure.setMessage("Author updated successfully");
   structure.setData(updatedAuthor);

@@ -22,7 +22,7 @@ public class BookService {
 
  public ResponseEntity<ResponseStructure<Book>> saveBook(Book book) {
   Book savedBook = bookDAO.saveBook(book);
-
+  
   ResponseStructure<Book> structure = new ResponseStructure<>();
   structure.setStatuscode(HttpStatus.CREATED.value());
   structure.setMessage("Book Saved");
@@ -72,7 +72,7 @@ public class BookService {
 
  }
 
- // PutMappingy to updatebook by id
+ // PutMapping to updatebook by id
 
  public ResponseEntity<ResponseStructure<Book>> updateBook(Book book) {
   ResponseStructure<Book> structure = new ResponseStructure<>();
