@@ -20,7 +20,7 @@ public class LoanDAO {
  }
 
  public List<Loan> getLoans() {
-  return loanRepository.findAll(); // Ensure the loans are fetched with associated Book and Member
+  return loanRepository.findAll(); 
  }
 
  public Optional<Loan> getLoanById(int id) {

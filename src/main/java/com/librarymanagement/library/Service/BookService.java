@@ -51,7 +51,7 @@ public class BookService {
   }
  }
 
- // GetMapping to gt book by id
+ // GetMapping to get book by id
 
  public ResponseEntity<ResponseStructure<Book>> getBookById(int id) {
   Optional<Book> book = bookDAO.getBookById(id);

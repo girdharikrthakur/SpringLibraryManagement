@@ -78,9 +78,8 @@ public class LoanService {
    structure.setMessage("No Loans Found");
    structure.setData(null);
    return new ResponseEntity<>(structure, HttpStatus.NO_CONTENT);
-   
-  }
-  else {
+
+  } else {
    structure.setStatuscode(HttpStatus.ACCEPTED.value());
    structure.setMessage("Loans retrieved successfully");
    structure.setData(loans); // Set the list of loans as data
